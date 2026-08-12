@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speack Ozi</title>
+    <style>[x-cloak]{display:none}</style>
+    <!-- Include the Alpine library on your page -->
+    <script src="https://unpkg.com/alpinejs" defer></script>
+    <!-- Include the TailwindCSS library on your page -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex flex-col min-h-screen bg-[#001738]">
+
+<nav x-data="{
+        navigationMenuOpen: false,
+        navigationMenu: '',
+        navigationMenuCloseDelay: 200,
+        navigationMenuCloseTimeout: null,
+        navigationMenuLeave() {
+            let that = this;
+            this.navigationMenuCloseTimeout = setTimeout(() => {
+                that.navigationMenuClose();
+            }, this.navigationMenuCloseDelay);
+        },
+        navigationMenuReposition(navElement) {
+            this.navigationMenuClearCloseTimeout();
+            this.$refs.navigationDropdown.style.left = navElement.offsetLeft + 'px';
+            this.$refs.navigationDropdown.style.marginLeft = (navElement.offsetWidth/2) + 'px';
+        },
+        navigationMenuClearCloseTimeout(){
+            clearTimeout(this.navigationMenuCloseTimeout);
+        },
+        navigationMenuClose(){
+            this.navigationMenuOpen = false;
+            this.navigationMenu = '';
+        }
+    }"
+    class="relative z-10 w-auto">
+    <div class="relative">
+        
+    <div class="flex items-center justify-between w-full py-2 mx-auto max-w-7xl">  
+        <div class="w-[200px] h-[30px] rounded bg-[rgb(0,87,214)] flex items-center justify-center -rotate-6 m-2" x-data="{ logoHtml: '' }" x-init="logoHtml = await (await fetch('./common/logo.html')).text()"
+            x-html="logoHtml" class="w-full">
+        </div>
+
+        <ul class="flex flex-1 justify-end items-center p-2 space-x-1 list-none rounded-md border text-neutral-700 group border-neutral-200/80">
+            <!-- load logo.html -->
+            
+            <li>
+                <button
+                    :class="{ 'bg-neutral-100' : navigationMenu=='incidents', 'hover:bg-neutral-100' : navigationMenu!='incidents' }" @mouseover="navigationMenuOpen=true; navigationMenuReposition($el); navigationMenu='incidents'" @mouseleave="navigationMenuLeave()" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:text-neutral-900 focus:outline-none disabled:opacity-50 disabled:pointer-events-none group">
+                    <span>Incidents</span> 
+                    <svg :class="{ '-rotate-180' : navigationMenuOpen==true && navigationMenu == 'incidents' }" class="relative top-[1px] ml-1 h-3 w-3 ease-out duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+            </li>
+            <li>
+                <button 
+                    :class="{ 'bg-neutral-100' : navigationMenu=='tasks', 'hover:bg-neutral-100' : navigationMenu!='tasks' }" @mouseover="navigationMenuOpen=true; navigationMenuReposition($el); navigationMenu='tasks'" @mouseleave="navigationMenuLeave()" class="inline-flex justify-center items-center px-4 py-2 w-max h-10 text-sm font-medium rounded-md transition-colors hover:text-neutral-900 focus:outline-none disabled:opacity-50 disabled:pointer-events-none bg-background hover:bg-neutral-100 group">
+                    <span>Tâches</span>
+                    <svg :class="{ '-rotate-180' : navigationMenuOpen==true && navigationMenu == 'tasks' }" class="relative top-[1px] ml-1 h-3 w-3 ease-out duration-300" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                </button>
+            </li>
+
+        </ul>
+    </div>
+    <div x-ref="navigationDropdown" x-show="navigationMenuOpen"
+        x-transition:enter="transition ease-out duration-100"
+        x-transition:enter-start="opacity-0 scale-90"
+        x-transition:enter-end="opacity-100 scale-100"
+        x-transition:leave="transition ease-in duration-100"
+        x-transition:leave-start="opacity-100 scale-100"
+        x-transition:leave-end="opacity-0 scale-90"
+        @mouseover="navigationMenuClearCloseTimeout()" @mouseleave="navigationMenuLeave()"
+        class="absolute top-0 pt-3 duration-200 ease-out -translate-x-1/2 translate-y-11" x-cloak>
+
+        <div class="flex overflow-hidden justify-center w-auto h-auto bg-white rounded-md border shadow-sm border-neutral-200/70">
+
+            <div x-show="navigationMenu == 'incidents'" class="flex justify-center items-stretch p-6 w-full">
+                <div class="w-72">
+                    <a href="#_" @click="load('relanceTemplate')" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                        <span class="block mb-1 font-medium text-black">Relance</span>
+                        <span class="block font-light leading-5 opacity-50">Prise de contact avec les utilisateurs</span>
+                    </a>
+                    <a href="#_" @click="$store.template = 'welcomeTemplate'" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                        <span class="block mb-1 font-medium text-black">welcome</span>
+                        <span class="block font-light leading-5 opacity-50">welcome page just to test the functionality</span>
+                    </a>
+                    <a href="#_" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                        <span class="block mb-1 font-medium text-black">Pines UI</span>
+                        <span class="block leading-5 opacity-50">An Alpine JS and Tailwind CSS UI library for awesome people. </span>
+                    </a>
+                    <a href="#_" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                        <span class="block mb-1 font-medium text-black">AlpineJS</span>
+                        <span class="block font-light leading-5 opacity-50">A framework without the complex setup or heavy dependencies.</span>
+                    </a>
+                    <a href="#_" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                        <span class="block mb-1 font-medium text-black">Livewire</span>
+                        <span class="block leading-5 opacity-50">A seamless integration of server-side and client-side interactions.</span>
+                    </a>
+                    <a href="#_" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                        <span class="block mb-1 font-medium text-black">Tails</span>
+                        <span class="block leading-5 opacity-50">The ultimate Tailwind CSS design tool that helps you craft beautiful websites.</span>
+                    </a>
+                </div>
+            </div>
+            <div x-show="navigationMenu == 'tasks'" class="flex justify-center items-stretch p-6 w-full">
+                <div class="w-72">
+                    <a href="#_" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                        <span class="block mb-1 font-medium text-black">Tailwind CSS</span>
+                        <span class="block font-light leading-5 opacity-50">A utility first CSS framework for building amazing websites.</span>
+                    </a>
+                    <a href="#_" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                        <span class="block mb-1 font-medium text-black">Laravel</span>
+                        <span class="block font-light leading-5 opacity-50">The perfect all-in-one framework for building amazing apps.</span>
+                    </a>
+                    <a href="#_" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                        <span class="block mb-1 font-medium text-black">Pines UI</span>
+                        <span class="block leading-5 opacity-50">An Alpine JS and Tailwind CSS UI library for awesome people. </span>
+                    </a>
+                        <a href="#_" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                            <span class="block mb-1 font-medium text-black">AlpineJS</span>
+                            <span class="block font-light leading-5 opacity-50">A framework without the complex setup or heavy dependencies.</span>
+                        </a>
+                        <a href="#_" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                            <span class="block mb-1 font-medium text-black">Livewire</span>
+                        <span class="block leading-5 opacity-50">A seamless integration of server-side and client-side interactions.</span>
+                    </a>
+                    <a href="#_" @click="navigationMenuClose()" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                        <span class="block mb-1 font-medium text-black">Tails</span>
+                        <span class="block leading-5 opacity-50">The ultimate Tailwind CSS design tool that helps you craft beautiful websites.</span>
+                    </a>
+                </div>
+            </div>
+        
+        </div>
+    </div>
+</nav>
+</body>
+</html>
+
+

@@ -1,0 +1,13 @@
+<html>
+    <footer class="bg-gray-800 text-white py-1 ">
+    <div class="flex justify-between items-center justify-center max-w-7xl mx-auto px-4">
+        <div class=""></div>
+        <div class="flex-gorw text-sm text-center">&copy; 2026 Speack Ozi. All rights reserved.</div>
+        <div class="justify-end" x-data="{ debugHtml: '' }"
+        x-init="debugHtml = await (await fetch('./common/debug.html')).text()"
+        x-html="debugHtml"
+        class="w-full">
+    </div>
+    </div>
+</footer>
+</html>

@@ -1,0 +1,75 @@
+<html>
+<div x-data="{ 
+        slideOverOpen: false 
+    }"
+    class="relative z-50 w-auto h-auto">
+    <button @click="slideOverOpen=true" class="inline-flex justify-center items-center px-1 py-1 h-10 text-sm font-medium rounded-md border transition-colors hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-neutral-200/60 focus:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none"><svg
+  width="24"
+  height="24"
+  viewBox="0 0 24 24"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <path
+    d="M10 11C10 10.4477 10.4477 10 11 10H13C13.5523 10 14 10.4477 14 11C14 11.5523 13.5523 12 13 12H11C10.4477 12 10 11.5523 10 11Z"
+    fill="currentColor"
+  />
+  <path
+    d="M11 14C10.4477 14 10 14.4477 10 15C10 15.5523 10.4477 16 11 16H13C13.5523 16 14 15.5523 14 15C14 14.4477 13.5523 14 13 14H11Z"
+    fill="currentColor"
+  />
+  <path
+    fill-rule="evenodd"
+    clip-rule="evenodd"
+    d="M9.09447 4.74918C8.41606 4.03243 8 3.0648 8 2H10C10 3.10457 10.8954 4 12 4C13.1046 4 14 3.10457 14 2H16C16 3.0648 15.5839 4.03243 14.9055 4.74918C16.1782 5.45491 17.1673 6.6099 17.6586 8H19C19.5523 8 20 8.44772 20 9C20 9.55229 19.5523 10 19 10H18V12H19C19.5523 12 20 12.4477 20 13C20 13.5523 19.5523 14 19 14H18V16H19C19.5523 16 20 16.4477 20 17C20 17.5523 19.5523 18 19 18H17.6586C16.8349 20.3304 14.6124 22 12 22C9.38756 22 7.16508 20.3304 6.34141 18H5C4.44772 18 4 17.5523 4 17C4 16.4477 4.44772 16 5 16H6V14H5C4.44772 14 4 13.5523 4 13C4 12.4477 4.44772 12 5 12H6V10H5C4.44772 10 4 9.55229 4 9C4 8.44772 4.44772 8 5 8H6.34141C6.83274 6.6099 7.82181 5.45491 9.09447 4.74918ZM8 16V10C8 7.79086 9.79086 6 12 6C14.2091 6 16 7.79086 16 10V16C16 18.2091 14.2091 20 12 20C9.79086 20 8 18.2091 8 16Z"
+    fill="currentColor"
+  />
+</svg></button>
+    <template x-teleport="body">
+        <div 
+            x-show="slideOverOpen"
+            @keydown.window.escape="slideOverOpen=false"
+            class="relative z-[99]">
+            <div x-show="slideOverOpen" x-transition.opacity.duration.600ms @click="slideOverOpen = false" class="fixed inset-0 bg-black/10"></div>
+            <div class="overflow-hidden fixed inset-0">
+                <div class="overflow-hidden absolute inset-0">
+                    <!-- Remove the pt-11 from the element below, this was needed only for the demo -->
+                    <div class="flex fixed inset-y-0 right-0 pt-11 pl-10 max-w-full">
+                        <div 
+                            x-show="slideOverOpen" 
+                            @click.away="slideOverOpen = false"
+                            x-transition:enter="transform transition ease-in-out duration-500 sm:duration-700" 
+                            x-transition:enter-start="translate-x-full" 
+                            x-transition:enter-end="translate-x-0" 
+                            x-transition:leave="transform transition ease-in-out duration-500 sm:duration-700" 
+                            x-transition:leave-start="translate-x-0" 
+                            x-transition:leave-end="translate-x-full" 
+                            class="w-screen max-w-md">
+                            <div class="flex overflow-y-scroll flex-col py-5 h-full bg-white border-l shadow-lg border-neutral-100/70">
+                                <div class="px-4 sm:px-5">
+                                    <div class="flex justify-between items-start pb-1">
+                                        <h2 class="text-base font-semibold leading-6 text-gray-900" id="slide-over-title">Liste des variables</h2>
+                                        <div class="flex items-center ml-3 h-auto"> 
+                                            <button @click="slideOverOpen=false" class="flex absolute right-0 z-30 justify-center items-center px-3 py-2 mt-6 mr-5 space-x-1 text-xs font-medium uppercase rounded-md border border-neutral-200 text-neutral-600 hover:bg-neutral-100">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-4 h-4"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                                <span>Close</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="relative flex-1 px-4 mt-5 sm:px-5">
+                                    <div class="absolute inset-0 px-4 sm:px-5">
+                                        <div class="overflow-hidden relative h-full rounded-md border border-dashed border-neutral-300"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</div>
+
+
+</html>

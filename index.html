@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+     <meta charset="UTF-8">
+     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <title>Speack Ozi</title>
+     <style>
+          [x-cloak] {
+               display: none
+          }
+     </style>
+     <!-- Include the Alpine library on your page -->
+     <script src="https://unpkg.com/alpinejs" defer></script>
+     <!-- Include the TailwindCSS library on your page -->
+     <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="flex flex-col min-h-screen bg-gray-50">
+
+
+     <!-- load navbar.html -->
+     <nav class="w-full bg-white shadow-md">
+          <div x-data="{ navbarHtml: '' }" x-init="navbarHtml = await (await fetch('./common/navbar.html')).text()"
+               x-html="navbarHtml" class="w-full">
+          </div>
+     </nav>
+
+
+     <!-- load welcome.html -->
+     <main class="flex-grow container mx-auto p-4">
+
+        <div id="main" x-data="{ welcome: '' }" x-init="welcome = await (await fetch('./incidents/welcome.html')).text()"
+               x-html="welcome" class="w-full">
+     </div>
+
+
+  <div x-html="content" class="w-full"></div>
+     </main>
+
+     <!-- load footer.html -->
+     <footer class="bg-gray-800 text-white py-4 w-full">
+          <div x-data="{ footerHtml: '' }" x-init="footerHtml = await (await fetch('./common/footer.html')).text()"
+               x-html="footerHtml" class="w-full">
+          </div>
+     </footer>
+</body>
+
+</html>
