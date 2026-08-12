@@ -31,7 +31,7 @@
      <!-- load welcome.html -->
      <main class="flex-grow container mx-auto p-4">
 
-        <div id="main" x-data="{ welcome: '' }" x-init="welcome = await (await fetch('./incidents/welcome.html')).text()"
+        <div id="main" x-data="{ welcome: '' }" x-init="welcome = await (await fetch('./common/doNotUseDefaultTemplate.html')).text()"
                x-html="welcome" class="w-full">
      </div>
 

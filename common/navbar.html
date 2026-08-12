@@ -79,11 +79,15 @@
 
             <div x-show="navigationMenu == 'incidents'" class="flex justify-center items-stretch p-6 w-full">
                 <div class="w-72">
-                    <a href="#_" @click="load('relanceTemplate')" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                    <a href="#_" 
+                        @click.prevent="document.getElementById('main').innerHTML = await (await fetch('./incidents/relanceTemplate.html')).text()"
+                        class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
                         <span class="block mb-1 font-medium text-black">Relance</span>
                         <span class="block font-light leading-5 opacity-50">Prise de contact avec les utilisateurs</span>
                     </a>
-                    <a href="#_" @click="$store.template = 'welcomeTemplate'" class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
+                    <a href="#_" 
+                            @click.prevent="document.getElementById('main').innerHTML = await (await fetch('./incidents/welcome.html')).text()"
+                            class="block px-3.5 py-3 text-sm rounded hover:bg-neutral-100">
                         <span class="block mb-1 font-medium text-black">welcome</span>
                         <span class="block font-light leading-5 opacity-50">welcome page just to test the functionality</span>
                     </a>
