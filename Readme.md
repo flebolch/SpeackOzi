@@ -1,5 +1,5 @@
 # SpeackOzi
-**"SpeackOzi est une application web locale et stand-alone (Alpine.js + Tailwind via Pines.js) pour techniciens. Sans serveur ni base de données, elle utilise des modèles génériques et anonymisés (RGPD) pour améliorer la qualité des interventions techniques."
+**SpeackOzi est une application web locale et stand-alone (Alpine.js + Tailwind via Pines.js) pour techniciens. Sans serveur ni base de données, elle utilise des modèles génériques et anonymisés (RGPD) pour améliorer la qualité des interventions techniques.
 
 # Description
 **Application web locale et stand-alone pour techniciens.** Sans serveur ni base de données, elle utilise **Alpine.js + Tailwind CSS (via Pines.js)** pour offrir des modèles génériques et anonymisés, conformes au RGPD.
