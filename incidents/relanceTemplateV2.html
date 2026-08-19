@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+
+    <!-- Hide elements until Alpine loads -->
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- Main Container -->
+    <div x-data="{ 
+        firstName: '',
+        ticket: '',
+        issue: '',
+        selectedRelance: 'S1',
+        switchOn: false,
+        workNote: 'S1 - Première relance',
+        language: 'FR',
+        selectedRelance: 'S1',
+        toggleLanguageButton: '',
+        copyButton: '',
+
+    optionsFR: [
+        { value: 'S1', label: 'S1 - Première relance' },
+        { value: 'S2', label: 'S2 - Seconde relance' },
+        { value: 'S3', label: 'S3 - Fermeture du ticket' }
+    ],
+    optionsEN: [
+        { value: 'S1', label: 'S1 - First follow-up' },
+        { value: 'S2', label: 'S2 - Second follow-up' },
+        { value: 'S3', label: 'S3 - Close ticket' }
+    ],
+    updateWorkNote(label) {
+        console.log('Selected:', label);
+        },
+        
+    updateWorkNote() {
+    const list = this.language === 'FR' ? this.optionsFR : this.optionsEN;
+    const opt = list.find(o => o.value === this.selectedRelance);
+    this.workNote = opt ? opt.label : '';
+    },
+    }" x-cloak>
+
+<!-- Formulaire Section -->
+        <section id="info" class="flex place-self-center bg-green-500 p-4 gap-4 w-[448px] rounded-t-md shadow-t-md">
+
+            <!-- Left side: Input fields -->
+            <div class="flex flex-col gap-1 flex-1">
+
+                <!-- Prénom -->
+                <div>
+                    <label for="firstName" class="text-sm font-semibold text-gray-700 block mb-1">Prénom de
+                        l'utilisateur</label>
+                    <input id="firstName" type="text" placeholder="Prénom" x-model="firstName"
+                        @input="generateMessage()"
+                        class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
+                </div>
+
+                <!-- Référence -->
+                <div>
+                    <label for="ticket" class="text-sm font-semibold text-gray-700 block mb-1">Référence de
+                        l'incident</label>
+                    <input id="ticket" type="text" placeholder="N° d'incident" x-model="ticket"
+                        @input="generateMessage()"
+                        class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
+                </div>
+
+                <!-- Résumé -->
+                <div>
+                    <label for="issue" class="text-sm font-semibold text-gray-700 block mb-1">Résumé de
+                        l'incident</label>
+                    <input id="issue" type="text" placeholder="Problématique" x-model="issue" @input="generateMessage()"
+                        class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
+                </div>
+            </div>
+
+            <!-- Right side: Relance Type Selection -->
+            <div class="flex flex-col gap-4">
+                
+                
+                <!-- Toggle Button Container -->
+<div data-element-id="toggleLanguage" 
+     @language-change="language = $event.detail.language; updateWorkNote()" 
+     x-init="async function() {
+       try {
+         toggleLanguageButton = await (await fetch('./common/buttons/toggleLanguageButton.html')).text();
+         await $nextTick();
+         Alpine.initTree($el);
+       } catch(e) {
+         console.error('Error loading toggle button:', e);
+       }
+     }()">
+  <!-- Debug: Display language value -->
+  <div x-html="toggleLanguageButton"></div>
+  <p class="text-sm text-gray-600">Language: <span x-text="language" class="font-bold"></span></p>
+</div>
+
+<!-- Relance Fieldset (your radios should be here) -->
+<fieldset class="border border-gray-300 p-2 rounded w-48">
+  <legend class="font-semibold text-gray-700 text-sm">
+    <span x-text="language === 'FR' ? 'Type de relance' : 'Select follow-up type'"></span>
+  </legend>
+
+  <template x-for="option in language === 'FR' ? optionsFR : optionsEN" :key="option.value">
+    <label class="flex items-center cursor-pointer mb-2">
+      <input type="radio" name="relance"
+             :value="option.value"
+             x-model="selectedRelance"
+             @change="updateWorkNote(option.label)"
+             class="mr-2">
+      <span x-text="option.label" class="text-sm"></span>
+    </label>
+  </template>
+</fieldset>
+
+            </div>
+
+        </section>
+        <div class="flex place-self-center bg-red-500 w-[448px]">
+
+
+            <!-- Template Worknotes -->
+            <section class="p-4" x-cloak>
+                <!-- Header with title and copy button -->
+                <div
+                    class="flex justify-between bg-blue-500 text-white px-4 py-2 rounded-t-md mb-0 min-w-[398px] shadow-md">
+                    <h3 class="font-semibold text-gray-700 text-sm">Work Notes</h3>
+
+<!-- Copy Button Component -->
+                    <div x-data="{ copyButton: '' }" data-element-id="workNote"
+                        x-init="copyButton = await (await fetch('./common/buttons/copyButton.html')).text(); $nextTick(() => Alpine.initTree($el))"
+                        x-html="copyButton">
+                    </div>
+                </div>
+
+<!-- Work notes content -->
+                <div class="bg-gray-50 px-4 p-1 rounded-b-lg border border-gray-300 w-full max-w-2xl">
+                    <p id="workNote" x-text="workNote"
+                        class="text-sm text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
+                    </p>
+                </div>
+            </section>
+
+
+
+
+
+        </div>
+<!-- Last Update (no Alpine, no x-cloak needed) -->
+        <section id="lastupdate" class="p-4 mt-4 border-t">
+            <h6>Dernière mise à jour : Le 19/08/2026</h6>
+        </section>
+
+</body>
+
+</html>

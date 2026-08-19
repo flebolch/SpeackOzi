@@ -1,12 +1,135 @@
+<!DOCTYPE html>
 <html>
-    <head>
-        <title>Relance</title>
-    </head>
-<div class="rounded-lg overflow-hidden border border-neutral-200/60 bg-green-500 text-neutral-700 shadow-sm w-auto max-h-3/4 rouded-xl p-4">
 
-    <div class="">
-        <h2 class="mb-2 text-lg font-bold leading-none tracking-tight">Relance</h2>
-        <p class="mb-5 text-white">This card element can be used to display a product, post, or any other type of data.</p>
-    </div>
+<head>
+    <meta charset="UTF-8">
+</head>
+
+<body>
+
+
+    <!-- Formulaire -->
+    <section id="info" class="flex bg-green-500 p-4 gap-4">
+        <!-- Left side: Input fields -->
+        <div class="flex flex-col gap-4 flex-1">
+            <!-- Prénom -->
+            <div>
+                <label for="firstName" class="text-sm text-gray-700 block mb-1">Prénom de l'utilisateur</label>
+                <input id="firstName" type="text" placeholder="Prénom" x-model="firstName" @input="generateMessage()"
+                    class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
+            </div>
+
+            <!-- Référence -->
+            <div>
+                <label for="ticket" class="text-sm text-gray-700 block mb-1">Référence de l'incident</label>
+                <input id="ticket" type="text" placeholder="N° d'incident" x-model="ticket" @input="generateMessage()"
+                    class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
+            </div>
+
+            <!-- Résumé -->
+            <div>
+                <label for="issue" class="text-sm text-gray-700 block mb-1">Résumé de l'incident</label>
+                <input id="issue" type="text" placeholder="Problématique" x-model="issue" @input="generateMessage()"
+                    class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
+            </div>
+        </div>
+
+        <!-- Right side: Fieldset -->
+        <div x-data="{ 
+    selectedRelance: 'S1',
+    options: [
+        { value: 'S1', label: 'S1 - Première relance' },
+        { value: 'S2', label: 'S2 - Seconde relance' },
+        { value: 'S3', label: 'S3 - Fermeture du ticket' }
+    ]
+}" x-ref="mainData">
+    
+    <fieldset class="space-y-2 border border-gray-300 p-4 rounded">
+        <legend class="font-semibold text-gray-700 mb-2">Sélectionnez le type de relance :</legend>
+    
+        <template x-for="option in options" :key="option.value">
+            <label class="flex items-center cursor-pointer">
+                <input type="radio" name="choice" :value="option.value" x-model="selectedRelance" class="mr-2">
+                <span x-text="option.label"></span>
+            </label>
+        </template>
+    </fieldset>
 </div>
+
+
+        <legend class="text-sm text-gray-700 mb-2">Sélectionnez le type de relance</legend>
+
+        <div class="flex items-center pl-1">
+            <input type="radio" id="S1" name="relance" value="S1" checked
+                @change="$refs.workNote.innerText('S1 - Première relance')" />
+            <label for="S1" class="text-sm ml-2">S1 - Première relance</label>
+        </div>
+
+        <div class="flex items-center pl-1">
+            <input type="radio" id="S2" name="relance" value="S2" @change="updateWorkNote('S2 - Seconde relance')" />
+            <label for="S2" class="text-sm ml-2">S2 - Seconde relance</label>
+        </div>
+
+        <div class="flex items-center pl-1">
+            <input type="radio" id="S3" name="relance" value="S3"
+                @change="updateWorkNote('S3 - Fermeture du ticket')" />
+            <label for="S3" class="text-sm ml-2">S3 - Fermeture du ticket</label>
+        </div>
+        <!-- Language -->
+        <label for="firstName" class="text-sm text-gray-700 block pt-2">Sélection de la langue </label>
+        <div x-data="{ switchOn: false }" class="flex space-x-2 py-1 pl-1">
+            <input id="thisId" type="checkbox" name="switch" class="hidden" :checked="switchOn">
+
+            <button x-ref="switchButton" type="button" @click="switchOn = ! switchOn"
+                :class="switchOn ? 'bg-red-600' : 'bg-blue-600'"
+                class="relative inline-flex h-[24px] py-0.5 ml-4 focus:outline-none rounded-full w-10" x-cloak>
+
+                <!-- Moving slider with flag inside -->
+                <span :class="switchOn ? 'translate-x-[18px]' : 'translate-x-0.5'"
+                    class="w-[24px] h-[24px] duration-200 ease-in-out bg-white rounded-full shadow-md flex items-center justify-center">
+
+                    <!-- French flag -->
+                    <img x-show="!switchOn" src="./common/icons/france.png" alt="français" width="24" height="24">
+
+                    <!-- English flag -->
+                    <img x-show="switchOn" src="./common/icons/united-kingdom.png" alt="english" width="24" height="24">
+                </span>
+            </button>
+        </div>
+        </fieldset>
+
+
+
+        <label @click="$refs.switchButton.click(); $refs.switchButton.focus()" :id="$id('switch')"
+            :class="{ 'text-red-600': switchOn, 'text-blue-600': ! switchOn }" class="text-sm select-none" x-cloak>
+        </label>
+        </div>
+
+
+    </section>
+
+    <hr>
+
+    <!-- Test Worknote-->
+    
+
+       <div class="mt-4 bg-blue-50 p-4 rounded">
+    <p class="text-sm">
+        Selected: <span class="font-semibold text-blue-600" x-text="$refs.mainData._x_dataStack[0].selectedRelance"></span>
+    </p>
+</div>
+    
+
+
+    </div>
+
+
+
+    <!-- Dernière mise à jour -->
+    <section id="lastupdate">
+        <h6>Dernièrer mise à jour : Le 14/08/2026</h6>
+    </section>
+
+</body>
+
 </html>
