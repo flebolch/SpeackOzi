@@ -11,6 +11,8 @@
                display: none
           }
      </style>
+     <!-- Load store BEFORE Alpine -->
+    <script src="./js/store.js"></script>
      <!-- Include the Alpine library on your page -->
      <script src="https://unpkg.com/alpinejs" defer></script>
      <!-- Include the TailwindCSS library on your page -->
@@ -31,7 +33,7 @@
      <!-- load welcome.html -->
      <main class="flex-grow container mx-auto p-4">
 
-        <div id="main" x-data="{ welcome: '' }" x-init="welcome = await (await fetch('./incidents/relanceTemplateV2.html')).text()"
+        <div id="main" x-data="{ welcome: '' }" x-init="welcome = await (await fetch('./common/welcome.html')).text()"
                x-html="welcome" class="w-full">
           </div>
 

@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <title>Welcome <span x-text="$store.signature.owner"></span></title>
+    </head>
+<div class="rounded-lg overflow-hidden border border-neutral-200/60 bg-green-500 text-neutral-700 shadow-sm w-auto max-h-3/4 rouded-xl p-4">
+
+    <div class="space-y-4">
+    <div>
+        <h2 class="mb-2 text-lg font-bold leading-none tracking-tight">Bienvenu <span x-text="$store.signature.owner"></span></h2>
+    </div>
+
+    <!-- Prénom -->
+    <div>
+        <label for="whoami" class="text-sm font-semibold text-gray-700 block mb-1">
+            Mon prénom
+        </label>
+        <input 
+            id="whoami" 
+            type="text" 
+            placeholder="Mon prénom de techos" 
+            x-model="owner"
+            @input="updateSignature()"
+            class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" 
+        />
+    </div>
+
+    <!-- Signature -->
+    <div>
+        <label for="signature" class="text-sm font-semibold text-gray-700 block mb-1">
+            Signature
+        </label>
+        <div class="bg-gray-50 px-4 py-2 rounded-b-lg border border-gray-300 w-full max-w-2xl">
+            <p 
+                id="signature" 
+                x-text="$store.signature.signature"
+                class="text-sm text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
+            </p>
+             <p x-text="$store.signature.owner"></p>
+        </div>
+    </div>
+</div>
+
+</div>
+</html>
