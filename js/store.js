@@ -1,7 +1,7 @@
 // js/store.js
 window.signatureStore = {
     owner: localStorage.getItem('signature_owner') || '',
-    signatureBase: ' - Service Desk Axa',
+    signatureBase: ' - Service Desk',
     
     get signature() {
         return (this.owner || '') + this.signatureBase;

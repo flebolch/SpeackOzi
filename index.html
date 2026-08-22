@@ -30,10 +30,10 @@
      </nav>
 
 
-     <!-- load welcome.html -->
+     <!-- load first screen -->
      <main class="flex-grow container mx-auto p-4">
 
-        <div id="main" x-data="{ welcome: '' }" x-init="welcome = await (await fetch('./common/welcome.html')).text()"
+        <div id="main" x-data="{ welcome: '' }" x-init="welcome = await (await fetch('./incidents/relanceTemplateV2.html')).text()"
                x-html="welcome" class="w-full">
           </div>
 

@@ -17,8 +17,9 @@
 <!-- Main Container -->
     <div x-data="{ 
         firstName: '',
-        ticket: '',
+        ticketNumber: '',
         issue: '',
+        ITSMNote: '',
         selectedRelance: 'S1',
         switchOn: false,
         workNote: 'S1 - Première relance',
@@ -37,14 +38,39 @@
         { value: 'S2', label: 'S2 - Second follow-up' },
         { value: 'S3', label: 'S3 - Close ticket' }
     ],
+
+    
+
+    S1ITSMFR() {
+    return `Bonjour ${this.firstName},
+Nous vous relançons concernant votre incident - ${this.ticketNumber}
+${this.issue}
+Merci de nous tenir informés de l'évolution de la situation.
+
+Cordialement,
+${this.$store.signature.signature}`;
+},
+    S2ITSMFR: [],
+    S3ITSMFR: [],
+    S1ITSMEN: [],
+    S2ITSMEN: [],
+    S3ITSMEN: [],
+
+    S1TeamFR: [],
+    S2TeamFR: [],
+    S3TeamFR: [],
+    S1TeamEN: [],
+    S2TeamEN: [],
+    S3TeamEN: [],
+
     updateWorkNote(label) {
         console.log('Selected:', label);
         },
         
     updateWorkNote() {
-    const list = this.language === 'FR' ? this.optionsFR : this.optionsEN;
-    const opt = list.find(o => o.value === this.selectedRelance);
-    this.workNote = opt ? opt.label : '';
+        const list = this.language === 'FR' ? this.optionsFR : this.optionsEN;
+        const opt = list.find(o => o.value === this.selectedRelance);
+        this.workNote = opt ? opt.label : '';
     },
     }" x-cloak>
 
@@ -65,9 +91,9 @@
 
                 <!-- Référence -->
                 <div>
-                    <label for="ticket" class="text-sm font-semibold text-gray-700 block mb-1">Référence de
+                    <label for="ticketNumber" class="text-sm font-semibold text-gray-700 block mb-1">Référence de
                         l'incident</label>
-                    <input id="ticket" type="text" placeholder="N° d'incident" x-model="ticket"
+                    <input id="ticketNumber" type="text" placeholder="N° d'incident" x-model="ticketNumber"
                         @input="generateMessage()"
                         class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
                 </div>
@@ -123,10 +149,32 @@
             </div>
 
         </section>
-        <div class="flex place-self-center bg-red-500 w-[448px]">
+        <div class="flex flex-col place-self-center bg-red-500 w-[448px]">
+
+<!-- Template ITSM -->
+            <section class="p-4" x-cloak>
+                <!-- Header with title and copy button -->
+                <div
+                    class="flex justify-between bg-blue-500 text-white px-4 py-2 rounded-tl-ls rounded-tr-lg mb-0 min-w-[398px] shadow-md">
+                    <h3 class="font-semibold text-gray-700 text-sm">ITSM</h3>
+
+<!-- Copy Button Component -->
+                    <div x-data="{ copyButton: '' }" data-element-id="workNote"
+                        x-init="copyButton = await (await fetch('./common/buttons/copyButton.html')).text(); $nextTick(() => Alpine.initTree($el))"
+                        x-html="copyButton">
+                    </div>
+                </div>
+
+<!-- ITSM note content -->
+                <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-ls border border-gray-300 w-full max-w-2xl">
+                    <p id="ITSMNote" x-text="S1ITSMFR"
+                        class="text-sm text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
+                    </p>
+                </div>
+            </section>           
 
 
-            <!-- Template Worknotes -->
+<!-- Template Worknotes -->
             <section class="p-4" x-cloak>
                 <!-- Header with title and copy button -->
                 <div
@@ -140,7 +188,7 @@
                     </div>
                 </div>
 
-<!-- Work notes content -->
+<!-- notes content -->
                 <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-ls border border-gray-300 w-full max-w-2xl">
                     <p id="workNote" x-text="workNote"
                         class="text-sm text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
