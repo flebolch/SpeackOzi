@@ -40,45 +40,134 @@
     ],
 
     
+    chatNote() {
+    if (this.selectedRelance === 'S1' && this.language === 'FR') {
+return `Bonjour ${this.firstName},
+Je suis ${this.owner} du Service Desk, je viens vers vous au sujet du ticket - ${this.ticketNumber} - dont l'objet est : 
+${this.issue}
+Ce problème est-il encore d'actualité ?`; 
+    } else if (this.selectedRelance === 'S2' && this.language === 'FR') {
+return `Bonjour ${this.firstName},
+Je viens une nouvelle fois vers vous au sujet du ticket - ${this.ticketNumber} - dont l'objet est : 
+${this.issue}
 
+Avez-vous un instant pour en discuter ?
+Sans retour de votre part dans les 3 jours ouvrés, je fermerais le ticket.`;
+    } else if (this.selectedRelance === 'S3' && this.language === 'FR') {
+return `Bonjour ${this.firstName},
+Pour information - n'ayant pas eu de retour de votre part au sujet du ticket - ${this.ticketNumber} - dont l'objet est : 
+${this.issue} 
+Je clos la demande.
+Vous avez cependant 5 jour pour demander sa réouverture depuis votre page des demandes: 
+https://silva.service-now.com/esc?id=my_requests `;
+    } else if (this.selectedRelance === 'S1' && this.language === 'EN') {
+return `Hello ${this.firstName},
+I'm ${this.owner} from Service Desk, I reaching you about - ${this.ticketNumber} - about :
+${this.issue} 
+Is this issue still relevant?`;
+    } else if (this.selectedRelance === 'S2' && this.language === 'EN') {
+return `Hi ${this.firstName},
+I contacting you, once again about - ${this.ticketNumber} -  :
+${this.issue} 
+FYI - Without your feedback, I will close the task after the 3 working days.`;
+    } else {
+return `Dear ${this.firstName},
+I have closed the ticket - ${this.ticketNumber} - about : 
+${this.issue}
+You have 5 working days to reopen it from your page : 
+https://silva.service-now.com/esc?id=my_requests `;
+    }
+    },
 
     ITSMNote() {
     if (this.selectedRelance === 'S1' && this.language === 'FR') {
-        return `Bonjour ${this.firstName},
-Nous vous relançons concernant votre incident - ${this.ticketNumber}
-${this.issue}
-Merci de nous tenir informés de l'évolution de la situation.
 
+return `Bonjour ${this.firstName},
+Je suis ${this.owner} du Service Desk, je viens vers vous au sujet du ticket - ${this.ticketNumber} - dont l'objet est : 
+${this.issue}
+Avez-vous un instant pour en discuter ?
+
+En attendant votre retour, 
+Cordialement, 
+${this.$store.signature.signature}`;
+
+
+    } else if (this.selectedRelance === 'S2' && this.language === 'FR') {
+
+return `Bonjour ${this.firstName},
+Je viens une nouvelle fois vers vous au sujet du ticket - ${this.ticketNumber} - dont l'objet est : 
+${this.issue}
+
+Ce problème est-il encore d'actualité?
+Sans retour de votre part dans les 3 jours ouvrés, je fermerais le ticket.
+
+En attendant votre retour, 
+Bien à vous, 
+${this.$store.signature.signature}`;
+
+    } else if (this.selectedRelance === 'S3' && this.language === 'FR') {
+
+ return `Bonjour ${this.firstName},
+Pour information - n'ayant pas eu de retour de votre part au sujet du ticket - ${this.ticketNumber} - dont l'objet est : 
+${this.issue} 
+Je clos la demande.
+Vous avez cependant 5 jour pour demander sa réouverture depuis votre page des demandes: 
+https://silva.service-now.com/esc?id=my_requests 
+
+En vous souhaitant une bonne journée,
 Cordialement,
 ${this.$store.signature.signature}`;
-    } else if (this.selectedRelance === 'S2' && this.language === 'FR') {
-        return `S2 - FR`;
-    } else if (this.selectedRelance === 'S3' && this.language === 'FR') {
-        return `S3 - FR`;
+
     } else if (this.selectedRelance === 'S1' && this.language === 'EN') {
-        return `S1 - EN`;
+//ITSM note S1 - EN
+return `Hello ${this.firstName},
+I'm ${this.owner} from Service Desk, I reaching you about - ${this.ticketNumber} - about :
+${this.issue} 
+Is this issue still relevant?
+
+I waiting for your prompt answer,
+Best regards, 
+${this.$store.signature.signature}`;
+
+
     } else if (this.selectedRelance === 'S2' && this.language === 'EN') {
-        return `S2 - EN`;
+//ITSM note S2 - EN
+return `Hi ${this.firstName},
+I contacting you, once again about - ${this.ticketNumber} -  :
+${this.issue} 
+FYI - Without your feedback, I will close the task after the 3 working days.
+
+I waiting for your prompt answer,
+Best regards, 
+${this.$store.signature.signature}`;
+
+    } else if (this.selectedRelance === 'S3' && this.language === 'EN')   {
+//ITSM note S3 - EN
+return `Dear ${this.firstName},
+I have closed the ticket - ${this.ticketNumber} - about : 
+${this.issue}
+You have 5 working days to reopen it from your page : 
+https://silva.service-now.com/esc?id=my_requests 
+
+Have a nice day,
+Best regards, 
+${this.$store.signature.signature}`;
+
     } else {
-        return `S3 - EN`;
+//debug
+return`
+ITSM note error
+values :
+
+username :  ${this.firstName},
+ticket number: ${this.ticketNumber},
+Incident descritpion : ${this.issue} 
+Signature : ${this.$store.signature.signature}
+`
     }
     },
 
-    chatNote() {
-    if (this.selectedRelance === 'S1' && this.language === 'FR') {
-        return `S1 - FR`;
-    } else if (this.selectedRelance === 'S2' && this.language === 'FR') {
-        return `S2 - FR`;
-    } else if (this.selectedRelance === 'S3' && this.language === 'FR') {
-        return `S3 - FR`;
-    } else if (this.selectedRelance === 'S1' && this.language === 'EN') {
-        return `S1 - EN`;
-    } else if (this.selectedRelance === 'S2' && this.language === 'EN') {
-        return `S2 - EN`;
-    } else {
-        return `S3 - EN`;
-    }
-    },
+
 
     updateWorkNote(label) {
         console.log('Selected:', label);
@@ -183,7 +272,7 @@ ${this.$store.signature.signature}`;
 <!-- ChatNote content -->
                 <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-ls border border-gray-300 w-full max-w-2xl">
                     <p id="chatNote" x-text="chatNote"
-                        class="text-xs leading-none text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
+                        class="text-xs leading-tight text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
                     </p>
                 </div>
             </section>           
@@ -205,7 +294,7 @@ ${this.$store.signature.signature}`;
 <!-- ITSM note content -->
                 <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-ls border border-gray-300 w-full max-w-2xl">
                     <p id="ITSMNote" x-text="ITSMNote"
-                        class="text-xs leading-none text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
+                        class="text-xs leading-tight text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
                     </p>
                 </div>
             </section>           
@@ -226,7 +315,7 @@ ${this.$store.signature.signature}`;
 <!-- notes content -->
                 <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-ls border border-gray-300 w-full max-w-2xl">
                     <p id="workNote" x-text="workNote"
-                        class="text-xs leading-none text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
+                        class="text-xs leading-tight text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
                     </p>
                 </div>
             </section>
@@ -235,7 +324,7 @@ ${this.$store.signature.signature}`;
         </div>
 <!-- Last Update (no Alpine, no x-cloak needed) -->
         <section id="lastupdate" class="p-4 mt-4 border-t">
-            <h6>Dernière mise à jour : Le 23/08/2026</h6>
+            <h6>Dernière mise à jour : Le 24/08/2026</h6>
         </section>
 
 </body>
