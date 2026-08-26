@@ -44,7 +44,7 @@
                 x-html="logoHtml" class="w-full">
             </div>
 
-            <ul class="flex flex-1 justify-end items-center p-2 space-x-1 list-none rounded-md border text-neutral-700 group border-neutral-200/80 max-w-md gap-2 bg-pink-500">
+            <ul class="flex flex-1 justify-end items-center p-2 space-x-1 list-none rounded-md border text-neutral-700 group border-neutral-200/80 max-w-md gap-2">
                 
                 <li>
                     <button
@@ -69,7 +69,7 @@
                         placeholder="?"
                         x-model="$store.signature.owner" 
                         @input="$store.signature.updateSignature()"
-                        class="text-center w-[30px] h-[30px] rounded-full p-2 text-sm placeholder-gray-400 transition-all duration-300 focus:w-[80px] focus:h-[80px] focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        class="text-center w-[30px] h-[30px] rounded-full p-x-2 text-sm placeholder-gray-400 transition-all duration-300 focus:w-[80px] focus:h-[80px] focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                 </li>
 

@@ -10,3 +10,10 @@
 
 ## 📜 Licence
 AGPL-3.0 – Utilisation libre, mais toute redistribution/modification doit conserver cette licence. La revente est interdite sans accord explicite.
+
+
+## Setup
+
+1. Copy `js/private_store.example.js` to `js/private_store.js`
+2. Update the values in `private_store.js` with your own
+3. Never commit `private_store.js` to git

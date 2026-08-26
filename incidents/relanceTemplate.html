@@ -29,21 +29,21 @@
         copyButton: '',
 
     optionsFR: [
-        { value: 'S1', label: 'S1 - Première relance' },
-        { value: 'S2', label: 'S2 - Seconde relance' },
-        { value: 'S3', label: 'S3 - Fermeture du ticket' }
+        { value: 'S1', label: 'S1 - Première relance et relance par chat' },
+        { value: 'S2', label: 'S2 - Seconde relance et ralance par chat' },
+        { value: 'S3', label: 'S3 - Fermeture du ticket et annonce par chat' }
     ],
     optionsEN: [
-        { value: 'S1', label: 'S1 - First follow-up' },
-        { value: 'S2', label: 'S2 - Second follow-up' },
-        { value: 'S3', label: 'S3 - Close ticket' }
+        { value: 'S1', label: 'S1 - First follow-up & reminder message via chat' },
+        { value: 'S2', label: 'S2 - Second follow-up & reminder message via chat' },
+        { value: 'S3', label: 'S3 - Close ticket - chat announcement' }
     ],
 
     
     chatNote() {
     if (this.selectedRelance === 'S1' && this.language === 'FR') {
 return `Bonjour ${this.firstName},
-Je suis ${this.owner} du Service Desk, je viens vers vous au sujet du ticket - ${this.ticketNumber} - dont l'objet est : 
+Je suis ${this.$store.signature.owner} du Service Desk, je viens vers vous au sujet du ticket - ${this.ticketNumber} - dont l'objet est : 
 ${this.issue}
 Ce problème est-il encore d'actualité ?`; 
     } else if (this.selectedRelance === 'S2' && this.language === 'FR') {
@@ -62,7 +62,7 @@ Vous avez cependant 5 jour pour demander sa réouverture depuis votre page des d
 https://silva.service-now.com/esc?id=my_requests `;
     } else if (this.selectedRelance === 'S1' && this.language === 'EN') {
 return `Hello ${this.firstName},
-I'm ${this.owner} from Service Desk, I reaching you about - ${this.ticketNumber} - about :
+I'm ${this.$store.signature.owner} from Service Desk, I reaching you about - ${this.ticketNumber} - about :
 ${this.issue} 
 Is this issue still relevant?`;
     } else if (this.selectedRelance === 'S2' && this.language === 'EN') {
@@ -83,7 +83,7 @@ https://silva.service-now.com/esc?id=my_requests `;
     if (this.selectedRelance === 'S1' && this.language === 'FR') {
 
 return `Bonjour ${this.firstName},
-Je suis ${this.owner} du Service Desk, je viens vers vous au sujet du ticket - ${this.ticketNumber} - dont l'objet est : 
+Je suis ${this.$store.signature.owner} du Service Desk, je viens vers vous au sujet du ticket - ${this.ticketNumber} - dont l'objet est : 
 ${this.issue}
 Avez-vous un instant pour en discuter ?
 
@@ -121,7 +121,7 @@ ${this.$store.signature.signature}`;
     } else if (this.selectedRelance === 'S1' && this.language === 'EN') {
 //ITSM note S1 - EN
 return `Hello ${this.firstName},
-I'm ${this.owner} from Service Desk, I reaching you about - ${this.ticketNumber} - about :
+I'm ${this.$store.signature.owner} from Service Desk, I reaching you about - ${this.ticketNumber} - about :
 ${this.issue} 
 Is this issue still relevant?
 
@@ -323,8 +323,8 @@ Signature : ${this.$store.signature.signature}
 
         </div>
 <!-- Last Update (no Alpine, no x-cloak needed) -->
-        <section id="lastupdate" class="p-4 mt-4 border-t">
-            <h6>Dernière mise à jour : Le 24/08/2026</h6>
+        <section id="lastupdate" class="p-1 mt-1 border-t">
+            <p class="text-md leading-tight ">Dernière mise à jour : Le 24/08/2026</p>
         </section>
 
 </body>
