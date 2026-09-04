@@ -40,11 +40,11 @@
     <div class="relative">
         
         <div class="flex items-center justify-between w-full py-2 mx-auto max-w-7xl">  
-            <div class="w-[200px] h-[30px] rounded bg-[rgb(0,87,214)] flex items-center justify-center -rotate-6 m-2" x-data="{ logoHtml: '' }" x-init="logoHtml = await (await fetch('./common/logo.html')).text()"
+            <div class="w-[200px] h-[30px] rounded bg-[rgb(0,87,214)] flex -rotate-6 ml-auto" x-data="{ logoHtml: '' }" x-init="logoHtml = await (await fetch('./common/logo.html')).text()"
                 x-html="logoHtml" class="w-full">
             </div>
 
-            <ul class="flex flex-1 items-center p-1 m-8 space-x-1 list-none rounded-md border group border-neutral-200/80 max-w-md gap-2 bg-[#99CEEE] font-bold ">
+            <ul class="flex items-center justify-end w-full p-1 mx-8 space-x-1 list-none rounded-md border group border-neutral-200/80 w-auto gap-2 bg-[#99CEEE] font-bold ml-auto">
                 
                 <li>
                     <button
