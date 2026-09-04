@@ -181,152 +181,130 @@ Signature : ${this.$store.signature.signature}
     }" x-cloak>
 
 <!-- Formulaire Section -->
-        <section id="info" class="flex place-self-center bg-green-500 p-4 gap-4 w-[448px] rounded-t-md shadow-t-md">
-
-            <!-- Left side: Input fields -->
-            <div class="flex flex-col gap-1 flex-1">
-
-                <!-- Prénom -->
-                <div>
-                    <label for="firstName" class="text-sm font-semibold text-gray-700 block mb-1">Prénom de
-                        l'utilisateur</label>
-                    <input id="firstName" type="text" placeholder="Prénom" x-model="firstName"
-                        @input="generateMessage()"
-                        class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
-                </div>
-
-                <!-- Référence -->
-                <div>
-                    <label for="ticketNumber" class="text-sm font-semibold text-gray-700 block mb-1">Référence de
-                        l'incident</label>
-                    <input id="ticketNumber" type="text" placeholder="N° d'incident" x-model="ticketNumber"
-                        @input="generateMessage()"
-                        class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
-                </div>
-
-                <!-- Résumé -->
-                <div>
-                    <label for="issue" class="text-sm font-semibold text-gray-700 block mb-1">Résumé de
-                        l'incident</label>
-                    <input id="issue" type="text" placeholder="Problématique" x-model="issue" @input="generateMessage()"
-                        class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
-                </div>
-            </div>
-
-            <!-- Right side: Relance Type Selection -->
-            <div class="flex flex-col gap-4">
-                
-                
-                <!-- Toggle Button Container -->
-<div data-element-id="toggleLanguage" 
-     @language-change="language = $event.detail.language; updateWorkNote()" 
-     x-init="async function() {
-       try {
-         toggleLanguageButton = await (await fetch('./common/buttons/toggleLanguageButton.html')).text();
-         await $nextTick();
-         Alpine.initTree($el);
-       } catch(e) {
-         console.error('Error loading toggle button:', e);
-       }
-     }()">
-  <!-- Debug: Display language value -->
-  <div x-html="toggleLanguageButton"></div>
-  <p class="text-sm text-gray-600">Language: <span x-text="language" class="font-bold"></span></p>
-</div>
-
-<!-- Relance Fieldset (your radios should be here) -->
-<fieldset class="border border-gray-300 p-2 rounded w-48">
-  <legend class="font-semibold text-gray-700 text-sm">
-    <span x-text="language === 'FR' ? 'Type de relance' : 'Select follow-up type'"></span>
-  </legend>
-
-  <template x-for="option in language === 'FR' ? optionsFR : optionsEN" :key="option.value">
-    <label class="flex items-center cursor-pointer mb-2">
-      <input type="radio" name="relance"
-             :value="option.value"
-             x-model="selectedRelance"
-             @change="updateWorkNote(option.label)"
-             class="mr-2">
-      <span x-text="option.label" class="text-sm"></span>
-    </label>
-  </template>
-</fieldset>
-
-            </div>
-
-        </section>
-        <div class="flex flex-col place-self-center bg-red-500 w-[448px]">
-
-<!-- Template chatNote -->
-            <section class="p-4" x-cloak>
-                <!-- Header with title and copy button -->
-                <div
-                    class="flex justify-between bg-blue-500 text-white px-4 py-2 rounded-tl-ls rounded-tr-lg mb-0 min-w-[398px] shadow-md">
-                    <h3 class="font-semibold text-gray-700 text-sm">chat Note</h3>
-<!-- Copy Button Component -->
-                    <div x-data="{ copyButton: '' }" data-element-id="chatNote"
-                        x-init="copyButton = await (await fetch('./common/buttons/copyButton.html')).text(); $nextTick(() => Alpine.initTree($el))"
-                        x-html="copyButton">
-                    </div>
-                </div>
-<!-- ChatNote content -->
-                <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-ls border border-gray-300 w-full max-w-2xl">
-                    <p id="chatNote" x-text="chatNote"
-                        class="text-xs leading-tight text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
-                    </p>
-                </div>
-            </section>           
-
-
-
-<!-- Template ITSM -->
-            <section class="p-4" x-cloak>
-                <!-- Header with title and copy button -->
-                <div
-                    class="flex justify-between bg-blue-500 text-white px-4 py-2 rounded-tl-ls rounded-tr-lg mb-0 min-w-[398px] shadow-md">
-                    <h3 class="font-semibold text-gray-700 text-sm">ITSM</h3>
-<!-- Copy Button Component -->
-                    <div x-data="{ copyButton: '' }" data-element-id="ITSMNote"
-                        x-init="copyButton = await (await fetch('./common/buttons/copyButton.html')).text(); $nextTick(() => Alpine.initTree($el))"
-                        x-html="copyButton">
-                    </div>
-                </div>
-<!-- ITSM note content -->
-                <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-ls border border-gray-300 w-full max-w-2xl">
-                    <p id="ITSMNote" x-text="ITSMNote"
-                        class="text-xs leading-tight text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
-                    </p>
-                </div>
-            </section>           
-
-
-<!-- Template Worknotes -->
-            <section class="p-4" x-cloak>
-                <!-- Header with title and copy button -->
-                <div
-                    class="flex justify-between bg-blue-500 text-white px-4 py-2 rounded-tl-ls rounded-tr-lg mb-0 min-w-[398px] shadow-md">
-                    <h3 class="font-semibold text-gray-700 text-sm">Work Notes</h3>
-<!-- Copy Button Component -->
-                    <div x-data="{ copyButton: '' }" data-element-id="workNote"
-                        x-init="copyButton = await (await fetch('./common/buttons/copyButton.html')).text(); $nextTick(() => Alpine.initTree($el))"
-                        x-html="copyButton">
-                    </div>
-                </div>
-<!-- notes content -->
-                <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-ls border border-gray-300 w-full max-w-2xl">
-                    <p id="workNote" x-text="workNote"
-                        class="text-xs leading-tight text-gray-700 font-mono leading-relaxed whitespace-pre-wrap">
-                    </p>
-                </div>
-            </section>
-
-
+ <body class="flex flex-col min-h-screen">
+  
+  <!-- Main Content Container -->
+  <main class="flex-1 flex flex-col items-center gap-1 p-1">
+    
+    <!-- Formulaire Section -->
+    <section id="info" class="flex place-self-center bg-[#99CEEE] p-4 gap-4 w-[448px] rounded-md shadow-xl border-2 border-[#001738]">
+      
+      <!-- Left side: Input fields -->
+      <div class="flex flex-col gap-1 flex-1 ">
+        <!-- Prénom -->
+        <div>
+          <label for="firstName" class="text-sm font-semibold text-gray-700 block mb-1">Prénom de l'utilisateur</label>
+          <input id="firstName" type="text" placeholder="Prénom" x-model="firstName" @input="generateMessage()"
+            class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
         </div>
-<!-- Last Update (no Alpine, no x-cloak needed) -->
-        <section id="lastupdate" class="p-1 mt-1 border-t">
-            <p class="text-md leading-tight ">Dernière mise à jour : Le 24/08/2026</p>
-        </section>
+
+        <!-- Référence -->
+        <div>
+          <label for="ticketNumber" class="text-sm font-semibold text-gray-700 block mb-1">Référence de l'incident</label>
+          <input id="ticketNumber" type="text" placeholder="N° d'incident" x-model="ticketNumber" @input="generateMessage()"
+            class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
+        </div>
+
+        <!-- Résumé -->
+        <div>
+          <label for="issue" class="text-sm font-semibold text-gray-700 block mb-1">Résumé de l'incident</label>
+          <input id="issue" type="text" placeholder="Problématique" x-model="issue" @input="generateMessage()"
+            class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
+        </div>
+      </div>
+
+      <!-- Right side: Relance Type Selection -->
+      <div class="flex flex-col gap-4">
+        <!-- Toggle Button Container -->
+        <div data-element-id="toggleLanguage" 
+             @language-change="language = $event.detail.language; updateWorkNote()" 
+             x-init="async function() {
+               try {
+                 toggleLanguageButton = await (await fetch('./common/buttons/toggleLanguageButton.html')).text();
+                 await $nextTick();
+                 Alpine.initTree($el);
+               } catch(e) {
+                 console.error('Error loading toggle button:', e);
+               }
+             }()">
+          <div x-html="toggleLanguageButton"></div>
+          <p class="text-sm text-gray-600">Language: <span x-text="language" class="font-bold"></span></p>
+        </div>
+
+        <!-- Relance Fieldset -->
+        <fieldset class="border border-[#001738] p-2 rounded w-48">
+          <legend class="font-semibold text-gray-700 text-sm">
+            <span x-text="language === 'FR' ? 'Type de relance' : 'Select follow-up type'"></span>
+          </legend>
+
+          <template x-for="option in language === 'FR' ? optionsFR : optionsEN" :key="option.value">
+            <label class="flex items-center cursor-pointer mb-2">
+              <input type="radio" name="relance"
+                     :value="option.value"
+                     x-model="selectedRelance"
+                     @change="updateWorkNote(option.label)"
+                     class="mr-2">
+              <span x-text="option.label" class="text-sm"></span>
+            </label>
+          </template>
+        </fieldset>
+      </div>
+    </section>
+
+    <!-- Output Sections Container -->
+    <div class="flex flex-col place-self-center bg-[#001738] w-[448px] border-[#99CEEE] border-2 rounded-md shadow-xl">
+      
+      <!-- Template chatNote -->
+      <section class="p-4" x-cloak>
+        <div class="flex justify-between bg-blue-500 text-white px-4 py-2 rounded-tl-lg rounded-tr-lg mb-0 min-w-[398px] shadow-md ">
+          <h3 class="font-semibold text-gray-700 text-sm">chat Note</h3>
+          <div x-data="{ copyButton: '' }" data-element-id="chatNote"
+            x-init="copyButton = await (await fetch('./common/buttons/copyButton.html')).text(); $nextTick(() => Alpine.initTree($el))"
+            x-html="copyButton"></div>
+        </div>
+        <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-lg border border-gray-300 w-full max-w-2xl">
+          <p id="chatNote" x-text="chatNote"
+            class="text-xs leading-tight text-gray-700 font-mono leading-relaxed whitespace-pre-wrap"></p>
+        </div>
+      </section>
+
+      <!-- Template ITSM -->
+      <section class="p-4" x-cloak>
+        <div class="flex justify-between bg-blue-500 text-white px-4 py-2 rounded-tl-lg rounded-tr-lg mb-0 min-w-[398px] shadow-md">
+          <h3 class="font-semibold text-gray-700 text-sm">ITSM</h3>
+          <div x-data="{ copyButton: '' }" data-element-id="ITSMNote"
+            x-init="copyButton = await (await fetch('./common/buttons/copyButton.html')).text(); $nextTick(() => Alpine.initTree($el))"
+            x-html="copyButton"></div>
+        </div>
+        <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-lg border border-gray-300 w-full max-w-2xl">
+          <p id="ITSMNote" x-text="ITSMNote"
+            class="text-xs leading-tight text-gray-700 font-mono leading-relaxed whitespace-pre-wrap"></p>
+        </div>
+      </section>
+
+      <!-- Template Worknotes -->
+      <section class="p-4" x-cloak>
+        <div class="flex justify-between bg-blue-500 text-white px-4 py-2 rounded-tl-lg rounded-tr-lg mb-0 min-w-[398px] shadow-md">
+          <h3 class="font-semibold text-gray-700 text-sm">Work Notes</h3>
+          <div x-data="{ copyButton: '' }" data-element-id="workNote"
+            x-init="copyButton = await (await fetch('./common/buttons/copyButton.html')).text(); $nextTick(() => Alpine.initTree($el))"
+            x-html="copyButton"></div>
+        </div>
+        <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-lg border border-gray-300 w-full max-w-2xl">
+          <p id="workNote" x-text="workNote"
+            class="text-xs leading-tight text-gray-700 font-mono leading-relaxed whitespace-pre-wrap"></p>
+        </div>
+      </section>
+    </div>
+
+  </main>
+
+  <!-- Last Update - Always at Bottom -->
+  <footer id="lastupdate" class="p-4 text-center mt-auto">
+    <p class="text-sm text-gray-400">Dernière mise à jour : Le 03/09/2026</p>
+  </footer>
 
 </body>
+
 
 </html>
