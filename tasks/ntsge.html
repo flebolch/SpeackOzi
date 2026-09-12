@@ -1,0 +1,181 @@
+<!-- Main Container -->
+<div x-data="{ 
+    firstName: '',
+    userMail: '',
+    ticketNumber: '',
+    issue: '',
+    switchOn: false,
+    
+    mail() {
+        return `
+Bonjour ${this.firstName},
+
+Veuillez noter que votre mot de passe pour NETSIEGE a été réinitialisé.
+Le mot de passe temporaire est : ${this.$store.signature.mdpTmpNet}
+Veuillez noter que vous devrez changer le mot de passe lors de la première connexion.
+
+Voici les règles pour le mot de passe :
+-	Composé d'exactement 8 caractères (ni plus, ni moins)
+-	Comporter uniquement des minuscules, pas de caractères spéciaux
+-	Comporter minimum un chiffre
+-	Ne pas comporter plus de 3 caractères identiques consécutifs
+-	Ne pas être égal à un des derniers mots de passe utilisés
+-	Si votre mot de passe n'est pas conforme vous pouvez malgré tout accéder à l'application, en revanche vous serez de nouveau bloqué sans aucune alerte ! 
+
+En cas de souci, je reste à votre disposition,
+Cordialement,`;
+    },
+
+   senMail(){
+        const userMail = document.getElementById('userMail').value;
+        const ticketNumber = document.getElementById('ticketNumber').value;
+        const mailContent = document.getElementById('mail').innerText;
+        
+        const subject = encodeURIComponent(`Réinitialisation de mot de passe Netsiège - ${ticketNumber}`);
+        const body = encodeURIComponent(mailContent);
+        
+        window.location.href = `mailto:${userMail}?subject=${subject}&body=${body}`;
+        
+        this.mailNotification = true;
+        let that = this;
+        setTimeout(function(){
+        that.mailNotification = false;
+      }, 3000);
+    },
+
+    ITSMNote() {
+        return `
+Bonjour ${this.firstName},
+
+Le mail contenant les instructions pour déverrouiller votre compte vous a été envoyé par servicedesk@axa-assistance.fr.
+Vous disposez d'un délai de 24 heures pour effectuer les manipulations nécessaires, après quoi votre compte sera verrouillé.
+
+Si vous rencontrez des difficultés ou si vous avez besoin d'aide, n'hésitez pas à nous contacter au 13 (ou d'une ligne extérieure au ${this.$store.signature.serviceDeksLine}).
+
+En vous souhaitant une bonne journée,
+
+Cordialement,
+${this.$store.signature.signature}`;
+    },
+
+    chatNote(){
+       return `Bonjour ${this.firstName}, 
+
+Je suis ${this.$store.signature.owner} du Service Desk, je viens vers vous au sujet de la connexion Netsiege - ${this.ticketNumber}
+Si vous avez besoin d'aide pour faire la modification du mot de passe, n'hésitez pas à me joindre par Teams ou à contacter le 13 :) 
+
+Lien vers l'application : 
+https://xnet.axa-fr.intraxa/sg/`;
+    }
+}" x-cloak>
+
+    <!-- Formulaire Section -->
+    <!-- Main Content Container -->
+    <main class="flex-1 flex flex-col items-center gap-1 p-1">
+
+        <!-- Formulaire Section -->
+        <section id="info"
+          class="flex place-self-center bg-[#99CEEE] p-4 gap-4 w-[448px] rounded-md shadow-xl border-2 border-[#001738]">
+
+          <!-- Left side: Input fields -->
+          <div class="flex flex-col gap-1 flex-1 ">
+            <!-- Prénom -->
+            <div>
+              <label for="firstName" class="text-sm font-semibold text-gray-700 block mb-1">Prénom de
+                l'utilisateur</label>
+              <input id="firstName" type="text" placeholder="Prénom" x-model="firstName" @input="generateMessage()"
+                class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
+            </div>
+
+            <div>
+              <label for="userMail" class="text-sm font-semibold text-gray-700 block mb-1">mail de l'utilisateur</label>
+              <input id="userMail" type="text" placeholder="Mail de l'utilisateur" x-model="userMail"
+                @input="generateMessage()"
+                class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
+            </div>
+
+            <!-- Référence -->
+            <div>
+              <label for="ticketNumber" class="text-sm font-semibold text-gray-700 block mb-1">Référence de la
+                demande</label>
+              <input id="ticketNumber" type="text" placeholder="N° de RITM" x-model="ticketNumber"
+                @input="generateMessage()"
+                class="w-40 h-8 px-2 py-1 text-xs bg-white border rounded-md border-neutral-300 placeholder:text-neutral-500 focus:border-neutral-300 focus:outline-none focus:ring-2 focus:ring-neutral-400" />
+            </div>
+
+        </section>
+
+        <!-- Output Sections Container -->
+        <div
+          class="flex flex-col place-self-center bg-[#001738] w-[448px] border-[#99CEEE] border-2 rounded-md shadow-xl">
+
+          <!-- Template mail -->
+          <section class="p-4" x-cloak>
+            <div
+              class="flex justify-between bg-blue-500 text-white px-4 py-2 rounded-tl-lg rounded-tr-lg mb-0 min-w-[398px] shadow-md ">
+              <h3 class="font-semibold text-gray-700 text-sm">Mail</h3>
+
+              <div class="flex gap-2">
+
+                <button @click="senMail()"
+                  class="flex items-center justify-center h-6 text-xs bg-white border rounded-md cursor-pointer w-6 border-neutral-200/60 hover:bg-neutral-100 active:bg-white focus:bg-white focus:outline-none text-neutral-500 hover:text-neutral-600 group">
+                  <svg fill="none" height="27" viewBox="0 0 34 27" width="34" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                      d="M28.5 25.6H5.5C3.4 25.6 1.70001 23.8929 1.70001 21.7841V5.41592C1.70001 3.30714 3.4 1.59998 5.5 1.59998H28.5C30.6 1.59998 32.3 3.30714 32.3 5.41592V21.7841C32.4 23.8929 30.6 25.6 28.5 25.6Z"
+                      stroke="#4F4F4F" stroke-linecap="round" stroke-miterlimit="10" stroke-width="2" />
+                    <path d="M17 14.9557L2.60001 3.60834" stroke="#4F4F4F" stroke-linecap="round"
+                      stroke-linejoin="round" stroke-miterlimit="10" stroke-width="2" />
+                    <path d="M31.4 3.60834L17 14.9557" stroke="#4F4F4F" stroke-linecap="round" stroke-linejoin="round"
+                      stroke-miterlimit="10" stroke-width="2" />
+                  </svg>
+                </button>
+                <div x-data="{ copyButton: '' }" data-element-id="mail"
+                  x-init="copyButton = await (await fetch('./common/buttons/copyButton.html')).text(); $nextTick(() => Alpine.initTree($el))"
+                  x-html="copyButton">
+                </div>
+              </div>
+            </div>
+            <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-lg border border-gray-300 w-full max-w-2xl">
+              <p id="mail" x-text="mail()"
+                class="text-xs leading-tight text-gray-700 font-mono leading-relaxed whitespace-pre-wrap"></p>
+            </div>
+          </section>
+
+          <!-- Template ITSM -->
+          <section class="p-4" x-cloak>
+            <div
+              class="flex justify-between bg-blue-500 text-white px-4 py-2 rounded-tl-lg rounded-tr-lg mb-0 min-w-[398px] shadow-md">
+              <h3 class="font-semibold text-gray-700 text-sm">ITSM</h3>
+              <div x-data="{ copyButton: '' }" data-element-id="ITSMNote"
+                x-init="copyButton = await (await fetch('./common/buttons/copyButton.html')).text(); $nextTick(() => Alpine.initTree($el))"
+                x-html="copyButton"></div>
+            </div>
+            <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-lg border border-gray-300 w-full max-w-2xl">
+              <p id="ITSMNote" x-text="ITSMNote()"
+                class="text-xs leading-tight text-gray-700 font-mono leading-relaxed whitespace-pre-wrap"></p>
+            </div>
+          </section>
+
+          <!-- Template chatNote -->
+          <section class="p-4" x-cloak>
+            <div
+              class="flex justify-between bg-blue-500 text-white px-4 py-2 rounded-tl-lg rounded-tr-lg mb-0 min-w-[398px] shadow-md">
+              <h3 class="font-semibold text-gray-700 text-sm">Chat</h3>
+              <div x-data="{ copyButton: '' }" data-element-id="chatNote"
+                x-init="copyButton = await (await fetch('./common/buttons/copyButton.html')).text(); $nextTick(() => Alpine.initTree($el))"
+                x-html="copyButton"></div>
+            </div>
+            <div class="bg-gray-50 px-4 p-1 rounded-bl-lg rounded-br-lg border border-gray-300 w-full max-w-2xl">
+              <p id="chatNote" x-text="chatNote()"
+                class="text-xs leading-tight text-gray-700 font-mono leading-relaxed whitespace-pre-wrap"></p>
+            </div>
+          </section>
+        </div>
+
+      </main>
+
+      <!-- Last Update - Always at Bottom -->
+      <footer id="lastupdate" class="p-4 text-center mt-auto">
+        <p class="text-sm text-gray-400">Dernière mise à jour : Le 07/09/2026</p>
+      </footer>
+</div>

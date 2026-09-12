@@ -3,6 +3,11 @@ async function loadConfig() {
         owner: '',
         signatureBase: ' - Service Desk',
         ITSMMyRequest: 'https://itsm.com/my_profile',
+        mdpTmpNet: 'Mot2PasseTemporaire',
+        serviceDeskLineQuick: '911',
+        serviceDeskLine: 'XXXXXXXXXX',
+        netapplication: 'Netapp',
+        serviceDeskMail: 'your-email@company.com',
     };
     
     try {
@@ -18,7 +23,9 @@ loadConfig().then(config => {
     window.signatureStore = {
         owner: localStorage.getItem('signature_owner') || config.owner,
         signatureBase: config.signatureBase,
-        silvaMyRequest: config.silvaMyRequest,
+        ITSMMyRequest: config.ITSMMyRequest,
+        mdpTmpNet: config.mdpTmpNet,
+        serviceDeskLine: config.serviceDeskLine,
         
         get signature() {
             return (this.owner || '') + this.signatureBase;
@@ -29,7 +36,18 @@ loadConfig().then(config => {
         }
     };
     
-    document.addEventListener('alpine:init', () => {
+    // Register store immediately (don't wait for alpine:init)
+    if (window.Alpine) {
         Alpine.store('signature', window.signatureStore);
-    });
+    } else {
+        document.addEventListener('alpine:init', () => {
+            Alpine.store('signature', window.signatureStore);
+        });
+    }
+
+    window.global = {
+        mdpTmpNet: config.mdpTmpNet,
+        serviceDeskMail: config.serviceDeskMail,
+        serviceDeskLine: config.serviceDeskLine,
+    };
 });

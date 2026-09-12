@@ -5,48 +5,106 @@
      <meta charset="UTF-8">
      <meta http-equiv="X-UA-Compatible" content="IE=edge">
      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <title>Speack Ozi</title>
-     <style>
-          [x-cloak] {
-               display: none
-          }
-     </style>
-     <!-- Load store BEFORE Alpine -->
-     <script src="./js/store.js"></script>
-     <!-- Include the Alpine library on your page -->
-     <script src="https://unpkg.com/alpinejs" defer></script>
-     <!-- Include the TailwindCSS library on your page -->
+     <title>Speak Ozi</title>
+     <style>[x-cloak]{display:none}</style>
+     
+     <!-- Load TailwindCSS from CDN -->
      <script src="https://cdn.tailwindcss.com"></script>
+
 </head>
 
 <body class="flex flex-col min-h-screen bg-[#0057D6]">
 
-
-     <!-- load navbar.html -->
-     <nav class="w-full bg-[#001738] shadow-md">
-          <div x-data="{ navbarHtml: '' }" x-init="navbarHtml = await (await fetch('./common/navbar.html')).text()"
-               x-html="navbarHtml" class="w-full">
-          </div>
+     <!-- Load navbar -->
+     <nav class="w-full bg-[#001738] shadow-md" id="navbar">
      </nav>
 
-
-     <!-- load first screen -->
-     <main class="flex-grow container mx-auto">
-
-        <div id="main" x-data="{ welcome: '' }" x-init="welcome = await (await fetch('./incidents/relanceTemplate.html')).text()"
-               x-html="welcome" class="w-full">
-          </div>
-
-
-  <div x-html="content" class="w-full"></div>
+     <!-- Load main content -->
+     <main class="flex-grow container mx-auto w-full" id="main">
      </main>
 
-     <!-- load footer.html -->
-     <footer class="bg-gray-800 text-white py-4 w-full">
-          <div x-data="{ footerHtml: '' }" x-init="footerHtml = await (await fetch('./common/footer.html')).text()"
-               x-html="footerHtml" class="w-full">
-          </div>
+     <!-- Load footer -->
+     <footer class="bg-gray-800 text-white py-4 w-full" id="footer">
      </footer>
+
+     <!-- Load Alpine FIRST -->
+     <script src="./js/alpine.min.js"></script>
+     
+     <!-- Load store SECOND -->
+     <script src="./js/store.js"></script>
+
+     <!-- Load content THIRD - with delay to ensure Alpine is ready -->
+     <script>
+    function cleanHtml(html) {
+        html = html.replace(/<!DOCTYPE[^>]*>/gi, '');
+        html = html.replace(/<html[^>]*>/gi, '');
+        html = html.replace(/<\/html>/gi, '');
+        html = html.replace(/<head[^>]*>[\s\S]*?<\/head>/gi, '');
+        
+        const bodyMatch = html.match(/<body[^>]*>([\s\S]*?)<\/body>/i);
+        if (bodyMatch) {
+            html = bodyMatch[1];
+        } else {
+            html = html.replace(/<body[^>]*>/gi, '');
+            html = html.replace(/<\/body>/gi, '');
+        }
+        
+        return html.trim();
+    }
+
+    async function loadContentIntoMain(url) {
+        try {
+            console.log('Loading:', url);
+            let html = await fetch(url).then(r => r.text());
+            html = cleanHtml(html);
+            document.getElementById('main').innerHTML = html;
+            
+            // Re-initialize Alpine for the newly loaded content
+            Alpine.destroyTree(document.getElementById('main'));
+            Alpine.initTree(document.getElementById('main'));
+            
+            console.log('✅ Content loaded and Alpine re-initialized');
+        } catch (error) {
+            console.error('❌ Error loading content:', error);
+        }
+    }
+
+    async function loadContent() {
+        console.log('Starting to load content...');
+        
+        try {
+            console.log('Fetching navbar...');
+            let navbarHtml = await fetch('./common/navbar.html').then(r => r.text());
+            navbarHtml = cleanHtml(navbarHtml);
+            document.getElementById('navbar').innerHTML = navbarHtml;
+            console.log('✅ Navbar loaded');
+            
+            console.log('Fetching main content...');
+            let mainHtml = await fetch('./tasks/ntsge.html').then(r => r.text());
+            mainHtml = cleanHtml(mainHtml);
+            document.getElementById('main').innerHTML = mainHtml;
+            console.log('✅ Main content loaded');
+            
+            console.log('Fetching footer...');
+            let footerHtml = await fetch('./common/footer.html').then(r => r.text());
+            footerHtml = cleanHtml(footerHtml);
+            document.getElementById('footer').innerHTML = footerHtml;
+            console.log('✅ Footer loaded');
+            
+            console.log('✅ All content loaded successfully');
+        } catch (error) {
+            console.error('❌ Error loading content:', error);
+        }
+    }
+    
+    // Load content after a small delay to ensure Alpine is initialized
+    setTimeout(loadContent, 500);
+    
+    // Make loadContentIntoMain globally available for navbar clicks
+    window.loadContentIntoMain = loadContentIntoMain;
+</script>
+
+
 </body>
 
 </html>

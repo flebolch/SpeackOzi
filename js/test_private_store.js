@@ -3,4 +3,8 @@
 export const privateConfig = {
     signatureBase: '',
     ITSMMyRequest: '',
+    mdpTmpNet:'racf1010',
+    serviceDeskLineQuick:'13',
+    serviceDeksLine:'XXXXXXXXXX',
+    netapplication:'Netsiege',
 };

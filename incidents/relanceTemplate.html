@@ -1,18 +1,3 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta charset="UTF-8">
-
-    <!-- Hide elements until Alpine loads -->
-    <style>
-        [x-cloak] {
-            display: none !important;
-        }
-    </style>
-</head>
-
-<body>
 
 <!-- Main Container -->
     <div x-data="{ 
@@ -22,7 +7,7 @@
         switchOn: false,
         chatNote: '',
         ITSMNote: '',
-        workNote: 'S1 - Première relance',
+        workNote: 'S1 - Première relance et relance par chat',
         language: 'FR',
         selectedRelance: 'S1',
         toggleLanguageButton: '',
@@ -305,6 +290,3 @@ Signature : ${this.$store.signature.signature}
   </footer>
 
 </body>
-
-
-</html>
