@@ -8,6 +8,8 @@ async function loadConfig() {
         serviceDeskLine: 'XXXXXXXXXX',
         netapplication: 'Netapp',
         serviceDeskMail: 'your-email@company.com',
+        netApplication: 'Netapplication',
+        netApplicationGw: 'https://portail.myapp.tld',
     };
     
     try {
@@ -20,12 +22,12 @@ async function loadConfig() {
 }
 
 loadConfig().then(config => {
-    window.signatureStore = {
+    // ✅ Store SIGNATURE
+    const signatureStore = {
         owner: localStorage.getItem('signature_owner') || config.owner,
         signatureBase: config.signatureBase,
         ITSMMyRequest: config.ITSMMyRequest,
         mdpTmpNet: config.mdpTmpNet,
-        serviceDeskLine: config.serviceDeskLine,
         
         get signature() {
             return (this.owner || '') + this.signatureBase;
@@ -36,18 +38,23 @@ loadConfig().then(config => {
         }
     };
     
-    // Register store immediately (don't wait for alpine:init)
+    // ✅ Store GLOBAL
+    const globalStore = {
+        serviceDeskLine: config.serviceDeskLine,
+        serviceDeskMail: config.serviceDeskMail,
+        netApplication: config.netApplication,
+        serviceDeskLineQuick: config.serviceDeskLineQuick,
+        netApplicationGw: config.netApplicationGw,
+    };
+    
+    // Enregistrer les deux stores
     if (window.Alpine) {
-        Alpine.store('signature', window.signatureStore);
+        Alpine.store('signature', signatureStore);
+        Alpine.store('global', globalStore);
     } else {
         document.addEventListener('alpine:init', () => {
-            Alpine.store('signature', window.signatureStore);
+            Alpine.store('signature', signatureStore);
+            Alpine.store('global', globalStore);
         });
     }
-
-    window.global = {
-        mdpTmpNet: config.mdpTmpNet,
-        serviceDeskMail: config.serviceDeskMail,
-        serviceDeskLine: config.serviceDeskLine,
-    };
 });

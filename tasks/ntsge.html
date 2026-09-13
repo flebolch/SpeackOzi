@@ -10,7 +10,7 @@
         return `
 Bonjour ${this.firstName},
 
-Veuillez noter que votre mot de passe pour NETSIEGE a été réinitialisé.
+Veuillez noter que votre mot de passe pour ${this.$store.global.netApplication} a été réinitialisé.
 Le mot de passe temporaire est : ${this.$store.signature.mdpTmpNet}
 Veuillez noter que vous devrez changer le mot de passe lors de la première connexion.
 
@@ -61,11 +61,11 @@ ${this.$store.signature.signature}`;
     chatNote(){
        return `Bonjour ${this.firstName}, 
 
-Je suis ${this.$store.signature.owner} du Service Desk, je viens vers vous au sujet de la connexion Netsiege - ${this.ticketNumber}
-Si vous avez besoin d'aide pour faire la modification du mot de passe, n'hésitez pas à me joindre par Teams ou à contacter le 13 :) 
+Je suis ${this.$store.signature.owner} du Service Desk, je viens vers vous au sujet de la connexion ${this.$store.global.netApplication} - ${this.ticketNumber}
+Si vous avez besoin d'aide pour faire la modification du mot de passe, n'hésitez pas à me joindre par Teams ou à contacter le ${this.$store.global.serviceDeskLineQuick} :) 
 
 Lien vers l'application : 
-https://xnet.axa-fr.intraxa/sg/`;
+${this.$store.global.netApplicationGw} `;
     }
 }" x-cloak>
 
